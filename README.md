@@ -35,6 +35,7 @@ TypeSpeed adalah sebuah web app uji kecepatan mengetik online berbasis HTML, Jav
     firebase serve
 
 📊 Fitur Leaderboard & Riwayat
+
 • Setiap hasil mengetik disimpan di database berdasarkan UID user.
 
 • Riwayat akan ditampilkan dalam profil pengguna.
