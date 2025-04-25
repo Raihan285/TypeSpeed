@@ -4,15 +4,75 @@ const words = [
   "berlari", "makan", "minum", "tidur", "jalan", "mobil", "motor", "naik", "turun", "pagi",
   "malam", "siang", "sore", "cepat", "lambat", "mudah", "sulit", "benar", "salah", "baru",
   "lama", "hitam", "putih", "merah", "biru", "kuning", "hijau", "besar", "kecil", "panjang",
-  "pendek", "baik", "buruk", "senang", "sedih", "cinta", "benci", "teman", "musuh", "jalan"
+  "pendek", "baik", "buruk", "senang", "sedih", "cinta", "benci", "teman", "musuh", "jalan",
+  "laut", "gunung", "hutan", "pantai", "hewan", "burung", "ikan", "ular", "bebek", "ayam",
+  "sapi", "kuda", "gajah", "monyet", "pisang", "apel", "jeruk", "mangga", "nasi", "roti",
+  "air", "kopi", "teh", "susu", "listrik", "lampu", "kaca", "pintu", "jendela", "atap",
+  "tembok", "lantai", "karpet", "sabun", "sikat", "handuk", "baju", "celana", "sepatu", "topi",
+  "uang", "kartu", "dompet", "tas", "telepon", "kamera", "radio", "musik", "lagu", "suara",
+  "kata", "kalimat", "huruf", "angka", "soal", "jawaban", "ujian", "nilai", "kelas", "rapor",
+  "kereta", "pesawat", "kapal", "perahu", "jembatan", "jalanan", "trotoar", "lampu", "rambu", "petunjuk",
+  "desa", "kota", "negara", "dunia", "peta", "bendera", "pasar", "toko", "kantor", "hotel",
+  "restoran", "kafe", "bioskop", "teater", "museum", "perpustakaan", "kebun", "zoo", "terminal", "bandara"
 ];
+
 
 const quotes = [
   "Kesuksesan dimulai dari keberanian mencoba.",
   "Jangan tunda pekerjaanmu, lakukan sekarang.",
   "Gagal itu hal biasa, bangkit itu luar biasa.",
-  "Setiap langkah kecil mendekatkanmu ke tujuan."
+  "Setiap langkah kecil mendekatkanmu ke tujuan.",
+  "Kerja keras tak pernah mengkhianati hasil.",
+  "Mimpi besar dimulai dari langkah pertama.",
+  "Percayalah pada dirimu sendiri.",
+  "Fokuslah pada solusi, bukan masalah.",
+  "Disiplin adalah jembatan antara tujuan dan pencapaian.",
+  "Semangat adalah bahan bakar kesuksesan.",
+  "Kesalahan adalah guru terbaik.",
+  "Belajar dari hari ini untuk sukses esok.",
+  "Sukses bukan akhir, gagal bukan berarti mati.",
+  "Tetap bergerak meski perlahan.",
+  "Orang hebat tidak dilahirkan, mereka ditempa.",
+  "Hidup adalah pilihan, jangan takut memilih.",
+  "Perubahan kecil hari ini berdampak besar esok.",
+  "Jangan menunggu motivasi, mulailah dulu.",
+  "Waktu tidak menunggu, manfaatkan sekarang.",
+  "Berani gagal berarti siap berhasil.",
+  "Selalu ada jalan untuk yang tidak menyerah.",
+  "Berpikir positif membukakan peluang baru.",
+  "Tantangan adalah peluang terselubung.",
+  "Jadilah versi terbaik dari dirimu.",
+  "Usaha keras mengalahkan bakat bila bakat tidak berusaha.",
+  "Tidak ada keberhasilan tanpa pengorbanan.",
+  "Langkah kecil lebih baik daripada diam.",
+  "Kesempatan tidak datang dua kali, ambillah sekarang.",
+  "Jangan iri, setiap orang punya waktunya sendiri.",
+  "Hidupmu berubah saat kamu berubah.",
+  "Bangun pagi adalah langkah awal kesuksesan.",
+  "Setiap detik adalah peluang.",
+  "Tekad kuat adalah kunci keberhasilan.",
+  "Terus belajar, terus tumbuh.",
+  "Mimpi tanpa aksi hanyalah khayalan.",
+  "Senyum adalah kekuatan tersembunyi.",
+  "Berani mencoba adalah setengah dari keberhasilan.",
+  "Bekerja cerdas dan keras secara bersamaan.",
+  "Lelah boleh, menyerah jangan.",
+  "Waktu terbaik untuk mulai adalah sekarang.",
+  "Setiap kegagalan mendekatkan pada keberhasilan.",
+  "Bermimpi setinggi langit, berpijak di bumi.",
+  "Berikan yang terbaik dalam segala hal.",
+  "Bersyukur membuka pintu kebahagiaan.",
+  "Hargai proses, nikmati hasil.",
+  "Tetap rendah hati saat berhasil.",
+  "Tindakan kecil bisa berdampak besar.",
+  "Konsistensi adalah kunci perubahan.",
+  "Orang sukses tidak banyak alasan.",
+  "Ketekunan mengalahkan keberuntungan.",
+  "Mulai dari sekarang, bukan nanti.",
+  "Jangan berhenti sampai bangga.",
+  "Percaya proses, nikmati perjalanan."
 ];
+
 
 const wordContainer = document.getElementById("word-container");
 const input = document.getElementById("hiddenInput");
@@ -32,7 +92,6 @@ let correctCount = 0, totalTyped = 0;
 let timerInterval = null;
 let username = null;
 
-// Toggle visibility berdasarkan mode
 function toggleOptionVisibility(mode) {
   document.querySelectorAll(".words-option").forEach(btn => 
     btn.classList.toggle("hidden", mode !== "words")
@@ -42,7 +101,7 @@ function toggleOptionVisibility(mode) {
   );
 }
 
-// Shuffle array
+
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -51,7 +110,7 @@ function shuffle(arr) {
   return arr;
 }
 
-// Generate teks berdasarkan mode
+
 function generateText() {
   clearInterval(timerInterval);
 
@@ -89,7 +148,7 @@ function generateText() {
   input.focus();
 }
 
-// Render karakter satu per satu
+
 function renderText() {
   wordContainer.innerHTML = "";
   currentText.split("").forEach((char, i) => {
@@ -108,7 +167,7 @@ function renderText() {
   input.value = "";
 }
 
-// Tampilkan hasil setelah selesai
+
 function showResult() {
   const timeTaken = (endTime ? (endTime - startTime) : (timeLimit * 1000)) / 60000;
   const wordCountTyped = currentText.trim().split(/\s+/).length;
@@ -122,18 +181,18 @@ function showResult() {
   }
 }
 
-// Simpan data leaderboard (sementara hanya localStorage)
+
 function saveToLeaderboard(mode, result) {
   const key = `leaderboard_${mode}`;
   const list = JSON.parse(localStorage.getItem(key)) || [];
   result.timestamp = new Date().toLocaleString("id-ID");
   list.push(result);
   list.sort((a, b) => b.wpm - a.wpm);
-  localStorage.setItem(key, JSON.stringify(list.slice(0, 10))); // top 10
+  localStorage.setItem(key, JSON.stringify(list.slice(0, 10))); 
 }
 
 
-// Tampilkan leaderboard
+
 function showLeaderboard(mode) {
   if (!username) {
     loginPopup.classList.remove("hidden");
@@ -148,7 +207,7 @@ function showLeaderboard(mode) {
   leaderboardContainer.classList.remove("hidden");
 }
 
-// Event input mengetik
+
 input.addEventListener("input", () => {
   if (!startTime) startTime = new Date();
   const chars = wordContainer.querySelectorAll("span");
@@ -180,7 +239,7 @@ input.addEventListener("input", () => {
   input.value = "";
 });
 
-// Fokus input jika body diklik
+
 document.body.addEventListener("click", () => input.focus());
 
 // Navbar button
@@ -213,7 +272,7 @@ document.querySelectorAll(".navbar button").forEach(button => {
   });
 });
 
-// Retry
+
 retryBtn.addEventListener("click", () => generateText());
 
 // Login form submit
@@ -232,7 +291,7 @@ document.getElementById("leaderboardBtn").addEventListener("click", () => {
   showLeaderboard(currentMode);
 });
 
-// Inisialisasi awal
+
 toggleOptionVisibility("words");
 generateText();
 
