@@ -1,0 +1,25 @@
+{
+  "name": "typespeed-app",
+  "version": "1.0.0",
+  "description": "TypeSpeed adalah sebuah web app uji kecepatan mengetik online berbasis HTML, JavaScript, dan Firebase. Aplikasi ini memungkinkan pengguna untuk mengukur kecepatan mengetik mereka secara real-time, menyimpan riwayat performa mereka, dan membandingkan skor dengan pengguna lain melalui leaderboard global.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raihan285/TypeSpeed.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raihan285/TypeSpeed/issues"
+  },
+  "homepage": "https://github.com/Raihan285/TypeSpeed#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "firebase": "^11.6.0"
+  }
+}
