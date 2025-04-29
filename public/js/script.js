@@ -112,7 +112,7 @@ function toggleOptionVisibility(mode) {
 }
 
 
-//type function
+
 function generateText() {
   clearInterval(timerInterval);
 
@@ -211,7 +211,7 @@ input.addEventListener("keydown", (e) => {
       showResult();
     }
 
-    e.preventDefault(); // prevent value from going into input field
+    e.preventDefault(); 
   }
 });
 
