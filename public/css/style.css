@@ -278,3 +278,33 @@ input {
     transform: translateY(0);
   }
 }
+
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  color: #ffa726;
+  font-weight: bold;
+}
+
+.language-switcher select {
+  background-color: #1e1e22;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: monospace;
+  font-size: 1rem;
+  margin-left: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-switcher select:hover {
+  background-color: #2c2c2e;
+}

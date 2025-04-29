@@ -41,6 +41,13 @@
 
   <div class="main">
     <div class="card">
+      <div class="language-switcher">
+        <label for="langSelect">🌐</label>
+        <select id="langSelect">
+          <option value="id">🇮🇩 Indonesia</option>
+          <option value="en">🇺🇸 English</option>
+        </select>
+      </div>      
       <div id="word-container"></div>
       <input type="text" id="hiddenInput" autofocus />
       <div id="wpm-display"></div>
@@ -96,6 +103,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
   </script>
+  <script src="/js/lang.js"></script>
   <script src="/js/script.js"></script>
 </body>
 </html>

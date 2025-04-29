@@ -116,16 +116,19 @@ function toggleOptionVisibility(mode) {
 function generateText() {
   clearInterval(timerInterval);
 
+  const langWords = translations[currentLang].words;
+  const langQuotes = translations[currentLang].quotes;
+
   if (currentMode === "words") {
-    currentText = shuffle([...words]).slice(0, wordCount).join(" ");
+    currentText = shuffle([...langWords]).slice(0, wordCount).join(" ");
   } else if (currentMode === "quote") {
-    currentText = quotes[Math.floor(Math.random() * quotes.length)];
+    currentText = langQuotes[Math.floor(Math.random() * langQuotes.length)];
   } else if (currentMode === "custom") {
-    currentText = "Ini adalah teks custom untuk latihan mengetik.";
+    currentText = t("customText");
   } else if (currentMode === "time") {
-    currentText = shuffle([...words]).slice(0, 300).join(" ");
+    currentText = shuffle([...langWords]).slice(0, 300).join(" ");
   } else {
-    currentText = "Fitur ini belum tersedia.";
+    currentText = "This feature is not available yet.";
   }
 
   renderText();
@@ -216,7 +219,15 @@ input.addEventListener("keydown", (e) => {
 });
 
 
-document.body.addEventListener("click", () => input.focus());
+document.body.addEventListener("click", (e) => {
+  const isDropdown = e.target.closest('#langSelect');
+  const isSelectBox = e.target.tagName === "SELECT" || e.target.closest("select");
+
+  if (!isDropdown && !isSelectBox) {
+    input.focus();
+  }
+});
+
 
 document.querySelectorAll(".navbar button").forEach(button => {
   button.addEventListener("click", () => {
@@ -339,3 +350,24 @@ const profileButton = document.getElementById("profileBtn");
 profileButton.addEventListener("click", () => {
   window.location.href = "/profile/profile.html"; 
 });
+
+
+document.getElementById("langSelect").addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  updateUI();
+});
+
+
+function updateUI() {
+  document.getElementById("retryBtn").textContent = t("retry");
+  document.getElementById("leaderboardBtn").textContent = `🏆 ${t("leaderboard")}`;
+  document.getElementById("profileBtn").textContent = t("profile");
+
+  const closeBtn = document.getElementById("close-leaderboard");
+  if (closeBtn) closeBtn.textContent = t("close");
+
+  if (currentMode === "custom") {
+    currentText = t("customText");
+    renderText();
+  }
+}
