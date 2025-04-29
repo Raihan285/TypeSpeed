@@ -1,18 +1,14 @@
-const express = require("express");
-const path = require("path");
-
+const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const path = require('path');
 
-// Middleware untuk file statis (CSS & JS)
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Route utama
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-// Jalankan server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server berjalan di http://localhost:${PORT}`);
 });

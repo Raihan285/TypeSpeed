@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TypeSpeed</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="navbar relative flex items-center p-4 bg-gray-800 text-white">
+
+    <a href="/" class="navbar-logo z-10">⌨️ TypeSpeed</a>
+  
+    <div class="absolute left-1/2 transform -translate-x-1/2 flex gap-4">
+      <button data-mode="words" class="active">words</button>
+      <button data-mode="time">time</button>
+      <button data-mode="quote">quote</button>
+      <button id="leaderboardBtn">🏆 Leaderboard</button>
+  
+      <button data-length="10" class="words-option">10 kata</button>
+      <button data-length="25" class="words-option">25 kata</button>
+      <button data-length="50" class="words-option">50 kata</button>
+      <button data-length="100" class="words-option">100 kata</button>
+  
+      <button data-time="10" class="time-option hidden">10s</button>
+      <button data-time="30" class="time-option hidden">30s</button>
+      <button data-time="60" class="time-option hidden">60s</button>
+      <button data-time="100" class="time-option hidden">100s</button>
+  
+      <button id="profileBtn">Profile</button>
+    </div>
+  
+  </div>
+  
+
+    <div class="flex items-center">
+    </div>
+  </div>
+
+
+
+  <div class="main">
+    <div class="card">
+      <div id="word-container"></div>
+      <input type="text" id="hiddenInput" autofocus />
+      <div id="wpm-display"></div>
+      <button id="retryBtn">Retry</button>
+    </div>
+  </div>
+
+  <div id="leaderboard-modal" class="hidden">
+    <div class="modal-content">
+      <h2>Leaderboard</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>WPM</th>
+            <th>Accuracy</th>
+            <th>Mode</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-table-body">
+        </tbody>
+      </table>
+      <button id="close-leaderboard">Close</button>
+    </div>
+  </div>
+  
+
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  
+  
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+  
+  
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+  
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyBLWqZeiGTmROKWJgfYCIKrLrhXNc1OGHw",
+    authDomain: "typespeed-raihan.firebaseapp.com",
+    projectId: "typespeed-raihan",
+    storageBucket: "typespeed-raihan.firebasestorage.app",
+    messagingSenderId: "317328236921",
+    appId: "1:317328236921:web:7ab7c61a278f50a3da4fa8"
+  };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+  <script src="/js/script.js"></script>
+</body>
+</html>
