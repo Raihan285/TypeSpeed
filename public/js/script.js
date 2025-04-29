@@ -169,36 +169,52 @@ function renderText() {
 }
 
 
-input.addEventListener("input", () => {
+let typedCharacters = [];
+
+input.addEventListener("keydown", (e) => {
   if (!startTime) startTime = new Date();
   const chars = wordContainer.querySelectorAll("span");
-  const typedChar = input.value[input.value.length - 1];
-  const currentChar = currentText[index];
 
-  if (!typedChar) return;
-
-  chars[index]?.classList.remove("active");
-
-  if (typedChar === currentChar) {
-    chars[index]?.classList.add("correct");
-    correctCount++;
-  } else {
-    chars[index]?.classList.add("incorrect");
+  if (e.key === "Backspace") {
+    if (index > 0) {
+      index--;
+      chars[index].classList.remove("correct", "incorrect");
+      chars[index].classList.add("active");
+      chars[index + 1]?.classList.remove("active");
+      typedCharacters.pop();
+      totalTyped--;
+    }
+    e.preventDefault();
+    return;
   }
 
-  index++;
-  totalTyped++;
+  if (e.key.length === 1) {
+    const currentChar = currentText[index];
+    chars[index]?.classList.remove("active");
 
-  if (index < chars.length) {
-    chars[index].classList.add("active");
-  } else {
-    endTime = new Date();
-    input.disabled = true;
-    showResult();
+    if (e.key === currentChar) {
+      chars[index]?.classList.add("correct");
+      correctCount++;
+    } else {
+      chars[index]?.classList.add("incorrect");
+    }
+
+    typedCharacters.push(e.key);
+    index++;
+    totalTyped++;
+
+    if (index < chars.length) {
+      chars[index].classList.add("active");
+    } else {
+      endTime = new Date();
+      input.disabled = true;
+      showResult();
+    }
+
+    e.preventDefault(); // prevent value from going into input field
   }
-
-  input.value = "";
 });
+
 
 document.body.addEventListener("click", () => input.focus());
 
