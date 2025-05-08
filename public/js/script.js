@@ -74,6 +74,15 @@ const quotes = [
 ];
 
 
+// Ambil parameter dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const urlMode = urlParams.get('mode');
+
+if (urlMode) {
+  currentMode = urlMode;
+}
+
+
 const wordContainer = document.getElementById("word-container");
 const input = document.getElementById("hiddenInput");
 const wpmDisplay = document.getElementById("wpm-display");
@@ -131,7 +140,7 @@ function generateText() {
     currentText = "This feature is not available yet.";
   }
 
-  renderText();
+  renderTextWithScroll();
 
   if (currentMode === "time" && timeLimit > 0) {
     let timeLeft = timeLimit;
@@ -153,13 +162,38 @@ function generateText() {
   input.focus();
 }
 
-function renderText() {
-  wordContainer.innerHTML = "";
+function renderTextWithScroll() {
+  const wordContainer = document.getElementById("word-container");
+  wordContainer.innerHTML = '<div id="word-inner"></div>';
+
+  const wordInner = document.getElementById("word-inner");
   currentText.split("").forEach((char, i) => {
     const span = document.createElement("span");
     span.textContent = char;
     if (i === 0) span.classList.add("active");
-    wordContainer.appendChild(span);
+    wordInner.appendChild(span);
+  });
+
+  index = 0;
+  startTime = null;
+  endTime = null;
+  correctCount = 0;
+  totalTyped = 0;
+  wpmDisplay.textContent = "";
+  input.value = "";
+  wordInner.style.transform = "translateY(0)";
+}
+
+
+function renderText() {
+  const wordInner = document.getElementById("word-inner");
+  wordInner.innerHTML = "";
+
+  currentText.split("").forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+    if (i === 0) span.classList.add("active");
+    wordInner.appendChild(span);
   });
 
   index = 0;
@@ -170,6 +204,13 @@ function renderText() {
   wpmDisplay.textContent = "";
   input.value = "";
 }
+
+const autoReplace = {
+  "ia": "dia",
+  "tdk": "tidak",
+  "sdh": "sudah"
+};
+
 
 
 let typedCharacters = [];
@@ -204,6 +245,14 @@ input.addEventListener("keydown", (e) => {
 
     typedCharacters.push(e.key);
     index++;
+    const lineHeight = 40; // dalam pixel, sesuaikan dengan desain
+const linesVisible = 3;
+
+const currentLine = Math.floor(chars[index]?.offsetTop / lineHeight);
+if (currentLine >= linesVisible) {
+  document.getElementById("word-inner").style.transform = `translateY(-${(currentLine - linesVisible + 1) * lineHeight}px)`;
+}
+
     totalTyped++;
 
     if (index < chars.length) {
@@ -213,6 +262,22 @@ input.addEventListener("keydown", (e) => {
       input.disabled = true;
       showResult();
     }
+
+    if (e.key === " ") {
+      const currentInput = typedCharacters.join("");
+      const wordsTyped = currentInput.split(" ");
+      const lastWord = wordsTyped[wordsTyped.length - 1];
+    
+      if (autoReplace[lastWord]) {
+        const replacement = autoReplace[lastWord];
+        const start = index - lastWord.length;
+        for (let i = 0; i < replacement.length; i++) {
+          if (chars[start + i]) chars[start + i].textContent = replacement[i];
+        }
+        typedCharacters.splice(-lastWord.length, lastWord.length, ...replacement.split(""));
+      }
+    }
+    
 
     e.preventDefault(); 
   }

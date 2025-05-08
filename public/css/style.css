@@ -111,19 +111,28 @@ input {
 
 
 #word-inner {
-  transition: transform 0.3s ease;
-}
-
-#word-inner .line {
-  display: block;
-  height: 2.5rem;
+  transition: transform 0.2s ease;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 2.5rem;
+  text-align: justify;
+  width: 100%;
 }
 
 #word-inner span {
   display: inline-block;
   min-width: 1ch;
   transition: all 0.1s ease;
+  text-align: justify;
+  word-break: break-word;
 }
+
+#word-inner .line {
+  display: block;
+  height: 2.5rem;
+  text-align: justify;
+}
+
 
 .correct {
   color: #4caf50;

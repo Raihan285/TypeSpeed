@@ -7,20 +7,42 @@ body {
 
 .navbar {
     background-color: #1c1c1e;
-    padding: 15px 30px;
     display: flex;
-    justify-content: left;
-
+    justify-content: space-between;
     align-items: center;
+    padding: 10px 20px;
     border-bottom: 1px solid #333;
-}
-
-.navbar-logo {
+    flex-wrap: wrap;
+  }
+  
+  .navbar-logo {
     color: #ffa726;
     text-decoration: none;
     font-size: 24px;
     font-weight: bold;
-}
+  }
+  
+  .navbar button {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+  }
+  
+  .navbar button:hover,
+  .navbar button.active {
+    color: #ffa726;
+    transform: translateY(-2px);
+  }
+  
+  .navbar button:active {
+    transform: translateY(1px);
+    color: #ffb74d;
+  }
+  
 
 #container {
     display: flex;
@@ -192,7 +214,6 @@ body {
     display: none;
 }
 
-
 .checkbox-container {
     display: flex;
     align-items: last baseline;
@@ -200,18 +221,16 @@ body {
     gap: 8px;
 }
 
-
 .checkbox-container input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: #ffa726;
 }
 
-
 .checkbox-container label {
     font-size: 14px;
     color: #ccc;
-    user-select: none; 
+    user-select: none;
 }
 
 #bg-video {
@@ -223,5 +242,4 @@ body {
     object-fit: cover;
     z-index: -1;
     filter: brightness(0.2) blur(2px);
-  }
-  
+}

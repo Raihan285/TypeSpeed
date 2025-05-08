@@ -1,12 +1,11 @@
-// Cek login status
 let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-// DOM Elements
+
 const loginSection = document.getElementById('login-section');
 const registerSection = document.getElementById('register-section');
 const profileSection = document.getElementById('profile-section');
 
-// Tampilkan halaman yang sesuai
+
 function renderPage() {
   if (isLoggedIn) {
     loginSection.classList.add('hidden');
@@ -109,3 +108,58 @@ document.getElementById('logout-button').addEventListener('click', function() {
 
 // Render pertama kali
 renderPage();
+
+
+// Navbar function
+let currentMode = "words";
+let wordCount = 50;
+let timeLimit = 0;
+
+function toggleOptionVisibility(mode) {
+  document.querySelectorAll(".words-option").forEach(btn =>
+    btn.classList.toggle("hidden", mode !== "words")
+  );
+  document.querySelectorAll(".time-option").forEach(btn =>
+    btn.classList.toggle("hidden", mode !== "time")
+  );
+}
+
+document.querySelectorAll(".navbar button").forEach(button => {
+  button.addEventListener("click", () => {
+    if (button.dataset.mode) {
+      currentMode = button.dataset.mode;
+      document.querySelectorAll("[data-mode]").forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      toggleOptionVisibility(currentMode);
+      console.log("Mode:", currentMode);
+    }
+
+    if (button.dataset.length) {
+      wordCount = parseInt(button.dataset.length);
+      currentMode = "words";
+      document.querySelectorAll("[data-length]").forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      document.querySelector('[data-mode="words"]').classList.add("active");
+      console.log("Words:", wordCount);
+    }
+
+    if (button.dataset.time) {
+      timeLimit = parseInt(button.dataset.time);
+      currentMode = "time";
+      document.querySelectorAll("[data-time]").forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      document.querySelector('[data-mode="time"]').classList.add("active");
+      console.log("Time:", timeLimit);
+    }
+  });
+});
+
+document.getElementById("profileBtn").addEventListener("click", () => {
+  window.location.href = "/profile/profile.html";
+});
+
+document.getElementById("leaderboardBtn").addEventListener("click", () => {
+  window.location.href = "/";
+});
+
+toggleOptionVisibility("words");
