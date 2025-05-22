@@ -106,7 +106,6 @@ document.getElementById('logout-button').addEventListener('click', function() {
   logout();
 });
 
-// Render pertama kali
 renderPage();
 
 

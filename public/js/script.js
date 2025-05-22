@@ -74,7 +74,6 @@ const quotes = [
 ];
 
 
-// Ambil parameter dari URL
 const urlParams = new URLSearchParams(window.location.search);
 const urlMode = urlParams.get('mode');
 
@@ -245,8 +244,8 @@ input.addEventListener("keydown", (e) => {
 
     typedCharacters.push(e.key);
     index++;
-    const lineHeight = 40; // dalam pixel, sesuaikan dengan desain
-const linesVisible = 3;
+    const lineHeight = 40; 
+    const linesVisible = 3;
 
 const currentLine = Math.floor(chars[index]?.offsetTop / lineHeight);
 if (currentLine >= linesVisible) {
