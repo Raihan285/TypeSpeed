@@ -258,7 +258,7 @@ if (currentLine >= linesVisible) {
       chars[index].classList.add("active");
     } else {
       endTime = new Date();
-      input.disabled = true;
+      input.disabled = true;//shdjsd
       showResult();
     }
 
