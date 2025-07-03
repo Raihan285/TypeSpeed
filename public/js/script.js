@@ -258,8 +258,8 @@ if (currentLine >= linesVisible) {
       chars[index].classList.add("active");
     } else {
       endTime = new Date();
-      input.disabled = true;//shdjsddss
-      showResult();
+      input.disabled = true;//shdjsddsss
+      showResult();//assada
     }
 
     if (e.key === " ") {
