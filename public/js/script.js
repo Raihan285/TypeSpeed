@@ -259,7 +259,7 @@ if (currentLine >= linesVisible) {
     } else {
       endTime = new Date();
       input.disabled = true;//shdjsddsss
-      showResult();//assada
+      showResult();//assada 
     }
 
     if (e.key === " ") {

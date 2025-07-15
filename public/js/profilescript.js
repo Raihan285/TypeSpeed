@@ -162,3 +162,23 @@ document.getElementById("leaderboardBtn").addEventListener("click", () => {
 });
 
 toggleOptionVisibility("words");
+
+// tests started profile function
+async function loadTestsStartedCount() {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+
+  const db = firebase.firestore();
+  const leaderboardRef = db.collection("leaderboard");
+  const snapshot = await leaderboardRef.where("username", "==", username).get();
+
+  const testsStarted = snapshot.size;
+  document.getElementById("tests-started").textContent = testsStarted;
+}
+
+function loadProfileData() {
+  document.getElementById('profile-username').textContent = localStorage.getItem('username') || 'Username';
+  document.getElementById('profile-joined').textContent = localStorage.getItem('joinDate') || 'Join Date';
+  
+  loadTestsStartedCount(); // Tambahkan ini
+}
