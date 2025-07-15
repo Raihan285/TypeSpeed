@@ -176,9 +176,28 @@ async function loadTestsStartedCount() {
   document.getElementById("tests-started").textContent = testsStarted;
 }
 
+// tests completed function
+async function loadTestsCompletedCount() {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+
+  const db = firebase.firestore();
+  const leaderboardRef = db.collection("leaderboard");
+  const snapshot = await leaderboardRef.where("username", "==", username).get();
+
+  const testsCompleted = snapshot.size;
+  document.getElementById("tests-completed").textContent = testsCompleted;
+}
+
 function loadProfileData() {
   document.getElementById('profile-username').textContent = localStorage.getItem('username') || 'Username';
   document.getElementById('profile-joined').textContent = localStorage.getItem('joinDate') || 'Join Date';
   
-  loadTestsStartedCount(); // Tambahkan ini
+  loadTestsStartedCount();
+  loadTestsCompletedCount(); 
 }
+
+
+
+
+
