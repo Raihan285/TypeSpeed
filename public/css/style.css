@@ -3,9 +3,7 @@ body {
   color: #fff;
   font-family: monospace;
   margin: 0;
-  
 }
-
 
 #bg-video {
   position: fixed;
@@ -17,7 +15,6 @@ body {
   z-index: -1;
   filter: brightness(0.2) blur(2px);
 }
-
 
 .hidden {
   display: none;
@@ -81,6 +78,7 @@ input {
   min-height: calc(100vh - 60px);
   padding: 20px;
 }
+
 #word-container {
   font-size: 2rem;
   line-height: 2.5rem;
@@ -88,20 +86,17 @@ input {
   width: 100%;
   height: 14.5rem;
   overflow: hidden;
-  text-align: left;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  border: 2px solid #333;
-  padding: 20px;
-  box-sizing: border-box;
-  position: relative;
   background-color: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  box-sizing: border-box;
   animation: fadeIn 0.6s ease-out;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: justify;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 #word-container:hover {
@@ -109,21 +104,19 @@ input {
   box-shadow: 0 12px 30px rgba(255, 167, 38, 0.2);
 }
 
-
 #word-inner {
   transition: transform 0.2s ease;
   white-space: normal;
-  word-wrap: break-word;
+  word-break: break-word;
   line-height: 2.5rem;
   text-align: justify;
   width: 100%;
+  hyphens: auto;
 }
 
 #word-inner span {
-  display: inline-block;
-  min-width: 1ch;
+  display: inline;
   transition: all 0.1s ease;
-  text-align: justify;
   word-break: break-word;
 }
 
@@ -132,7 +125,6 @@ input {
   height: 2.5rem;
   text-align: justify;
 }
-
 
 .correct {
   color: #4caf50;
@@ -200,8 +192,6 @@ input {
   background-color: #e68a00;
   transform: translateY(1px);
 }
-
-
 
 #leaderboard-modal {
   display: none;
@@ -287,7 +277,6 @@ input {
     transform: translateY(0);
   }
 }
-
 
 .language-switcher {
   display: flex;

@@ -258,8 +258,8 @@ if (currentLine >= linesVisible) {
       chars[index].classList.add("active");
     } else {
       endTime = new Date();
-      input.disabled = true;//shdjsddsss
-      showResult();//assada 
+      input.disabled = true;
+      showResult();
     }
 
     if (e.key === " ") {
@@ -383,6 +383,8 @@ function showResult() {
   const timeTaken = (endTime ? (endTime - startTime) : (timeLimit * 1000)) / 60000;
   const wpm = Math.round((correctCount / 5) / timeTaken);
   const accuracy = ((correctCount / totalTyped) * 100).toFixed(2);
+  const duration = (endTime ? (endTime - startTime) : (timeLimit * 1000)) / 1000;
+
 
   wpmDisplay.innerHTML = `WPM: ${wpm} <br>Akurasi: ${accuracy}%`;
 
@@ -390,7 +392,8 @@ function showResult() {
     saveToLeaderboard(currentMode, {
       username: username,
       wpm: wpm,
-      accuracy: accuracy
+      accuracy: accuracy,
+      duration: Math.round(duration)
     });
   }
 }
@@ -401,6 +404,7 @@ function saveToLeaderboard(mode, result) {
     username: result.username,
     wpm: result.wpm,
     accuracy: result.accuracy,
+    duration: result.duration,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   })
   .then(() => console.log('Leaderboard data added'))

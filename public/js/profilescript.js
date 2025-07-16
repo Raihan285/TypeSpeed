@@ -1,10 +1,8 @@
 let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-
 const loginSection = document.getElementById('login-section');
 const registerSection = document.getElementById('register-section');
 const profileSection = document.getElementById('profile-section');
-
 
 function renderPage() {
   if (isLoggedIn) {
@@ -19,7 +17,6 @@ function renderPage() {
   }
 }
 
-// Login function
 function login(email, password) {
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
@@ -35,36 +32,28 @@ function login(email, password) {
     });
 }
 
-// Register function
 function register(username, email, password) {
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      
-      db.collection("users").doc(user.uid).set({
+
+      return db.collection("users").doc(user.uid).set({
         username: username,
         email: email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', username);
+        localStorage.setItem('joinDate', new Date().toLocaleDateString());
+        isLoggedIn = true;
+        renderPage();
       });
-
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', username);
-      localStorage.setItem('joinDate', new Date().toLocaleDateString());
-      isLoggedIn = true;
-      renderPage();
     })
     .catch((error) => {
       alert('Registrasi gagal: ' + error.message);
     });
 }
 
-// Load Profile Data
-function loadProfileData() {
-  document.getElementById('profile-username').textContent = localStorage.getItem('username') || 'Username';
-  document.getElementById('profile-joined').textContent = localStorage.getItem('joinDate') || 'Join Date';
-}
-
-// Logout function
 function logout() {
   firebase.auth().signOut()
     .then(() => {
@@ -77,14 +66,13 @@ function logout() {
     });
 }
 
-// Event Listeners
-document.getElementById('login-button').addEventListener('click', function() {
+document.getElementById('login-button').addEventListener('click', function () {
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
   login(email, password);
 });
 
-document.getElementById('register-button').addEventListener('click', function() {
+document.getElementById('register-button').addEventListener('click', function () {
   const username = document.getElementById('register-username').value;
   const email = document.getElementById('register-email').value;
   const verifyEmail = document.getElementById('register-verify-email').value;
@@ -102,14 +90,12 @@ document.getElementById('register-button').addEventListener('click', function() 
   register(username, email, password);
 });
 
-document.getElementById('logout-button').addEventListener('click', function() {
+document.getElementById('logout-button').addEventListener('click', function () {
   logout();
 });
 
 renderPage();
 
-
-// Navbar function
 let currentMode = "words";
 let wordCount = 50;
 let timeLimit = 0;
@@ -130,7 +116,6 @@ document.querySelectorAll(".navbar button").forEach(button => {
       document.querySelectorAll("[data-mode]").forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
       toggleOptionVisibility(currentMode);
-      console.log("Mode:", currentMode);
     }
 
     if (button.dataset.length) {
@@ -139,7 +124,6 @@ document.querySelectorAll(".navbar button").forEach(button => {
       document.querySelectorAll("[data-length]").forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
       document.querySelector('[data-mode="words"]').classList.add("active");
-      console.log("Words:", wordCount);
     }
 
     if (button.dataset.time) {
@@ -148,56 +132,113 @@ document.querySelectorAll(".navbar button").forEach(button => {
       document.querySelectorAll("[data-time]").forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
       document.querySelector('[data-mode="time"]').classList.add("active");
-      console.log("Time:", timeLimit);
     }
   });
 });
 
-document.getElementById("profileBtn").addEventListener("click", () => {
+document.getElementById("profileBtn")?.addEventListener("click", () => {
   window.location.href = "/profile/profile.html";
 });
 
-document.getElementById("leaderboardBtn").addEventListener("click", () => {
+document.getElementById("leaderboardBtn")?.addEventListener("click", () => {
   window.location.href = "/";
 });
 
 toggleOptionVisibility("words");
 
-// tests started profile function
 async function loadTestsStartedCount() {
   const username = localStorage.getItem('username');
   if (!username) return;
 
-  const db = firebase.firestore();
-  const leaderboardRef = db.collection("leaderboard");
-  const snapshot = await leaderboardRef.where("username", "==", username).get();
-
-  const testsStarted = snapshot.size;
-  document.getElementById("tests-started").textContent = testsStarted;
+  const snapshot = await db.collection("leaderboard").where("username", "==", username).get();
+  document.getElementById("tests-started").textContent = snapshot.size;
 }
 
-// tests completed function
 async function loadTestsCompletedCount() {
   const username = localStorage.getItem('username');
   if (!username) return;
 
-  const db = firebase.firestore();
-  const leaderboardRef = db.collection("leaderboard");
-  const snapshot = await leaderboardRef.where("username", "==", username).get();
+  const snapshot = await db.collection("leaderboard").where("username", "==", username).get();
+  document.getElementById("tests-completed").textContent = snapshot.size;
+}
 
-  const testsCompleted = snapshot.size;
-  document.getElementById("tests-completed").textContent = testsCompleted;
+async function loadTimeTyping() {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+
+  const snapshot = await db.collection("leaderboard").where("username", "==", username).get();
+  let totalSeconds = 0;
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.duration) {
+      totalSeconds += data.duration;
+    } else {
+      totalSeconds += data.mode === "time" ? 60 : 45;
+    }
+  });
+
+  const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const s = String(totalSeconds % 60).padStart(2, '0');
+
+  document.getElementById("time-typing").textContent = `${h}:${m}:${s}`;
+}
+
+async function loadXPAndLevel() {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+
+  const snapshot = await db.collection("leaderboard").where("username", "==", username).get();
+  let totalXP = 0;
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const xp = Math.round((data.wpm || 0) + ((data.accuracy || 0) / 2));
+    totalXP += xp;
+  });
+
+  const level = Math.floor(totalXP / 100);
+  const xpInLevel = totalXP % 100;
+
+  document.getElementById("user-level").textContent = `Level: ${level}`;
+  document.getElementById("user-xp").textContent = `XP: ${xpInLevel} / 100`;
+  document.getElementById("xp-bar").style.width = `${xpInLevel}%`;
+}
+
+async function loadBestScore() {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+
+  const snapshot = await db.collection("leaderboard").where("username", "==", username).get();
+
+  let bestWPM = 0;
+  let bestAccuracy = 0;
+  let bestDate = null;
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.wpm > bestWPM) {
+      bestWPM = data.wpm;
+      bestAccuracy = data.accuracy || 0;
+      bestDate = data.date?.toDate ? data.date.toDate() : null;
+    }
+  });
+
+  document.getElementById("best-wpm").textContent = bestWPM + " WPM";
+  document.getElementById("best-accuracy").textContent = bestAccuracy + "%";
+  document.getElementById("best-date").textContent = bestDate
+    ? bestDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+    : "-";
 }
 
 function loadProfileData() {
   document.getElementById('profile-username').textContent = localStorage.getItem('username') || 'Username';
   document.getElementById('profile-joined').textContent = localStorage.getItem('joinDate') || 'Join Date';
-  
+
   loadTestsStartedCount();
-  loadTestsCompletedCount(); 
+  loadTestsCompletedCount();
+  loadTimeTyping();
+  loadXPAndLevel();
+  loadBestScore(); // ✅ Tambahkan ini
 }
-
-
-
-
-
