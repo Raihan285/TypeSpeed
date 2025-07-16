@@ -32,6 +32,61 @@ function login(email, password) {
     });
 }
 
+// Login dengan Google
+function loginWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', user.displayName || user.email.split('@')[0]);
+      localStorage.setItem('joinDate', new Date().toLocaleDateString());
+      isLoggedIn = true;
+
+      // Simpan ke Firestore jika belum ada
+      return db.collection("users").doc(user.uid).set({
+        username: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    })
+    .then(() => {
+      renderPage();
+    })
+    .catch((error) => {
+      alert('Login Google gagal: ' + error.message);
+    });
+}
+
+// Login dengan GitHub
+function loginWithGithub() {
+  const provider = new firebase.auth.GithubAuthProvider();
+
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', user.displayName || user.email.split('@')[0]);
+      localStorage.setItem('joinDate', new Date().toLocaleDateString());
+      isLoggedIn = true;
+
+      // Simpan ke Firestore jika belum ada
+      return db.collection("users").doc(user.uid).set({
+        username: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    })
+    .then(() => {
+      renderPage();
+    })
+    .catch((error) => {
+      alert('Login GitHub gagal: ' + error.message);
+    });
+}
+
+
 function register(username, email, password) {
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
@@ -71,6 +126,15 @@ document.getElementById('login-button').addEventListener('click', function () {
   const password = document.getElementById('login-password').value;
   login(email, password);
 });
+
+document.getElementById('google-login').addEventListener('click', function () {
+  loginWithGoogle();
+});
+
+document.getElementById('github-login').addEventListener('click', function () {
+  loginWithGithub();
+});
+
 
 document.getElementById('register-button').addEventListener('click', function () {
   const username = document.getElementById('register-username').value;
@@ -240,5 +304,5 @@ function loadProfileData() {
   loadTestsCompletedCount();
   loadTimeTyping();
   loadXPAndLevel();
-  loadBestScore(); // ✅ Tambahkan ini
+  loadBestScore(); 
 }

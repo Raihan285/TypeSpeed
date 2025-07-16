@@ -341,13 +341,34 @@ closeLeaderboard.addEventListener("click", () => {
 function showLeaderboard(mode) {
   db.collection("leaderboard")
     .where("mode", "==", mode)
-    .orderBy("wpm", "desc")
-    .limit(10)
     .get()
     .then((querySnapshot) => {
+      const userBestScores = {};
+
+      // Kumpulkan skor terbaik untuk setiap user
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const username = data.username;
+
+        if (!userBestScores[username] || data.wpm > userBestScores[username].wpm) {
+          userBestScores[username] = {
+            username: data.username,
+            wpm: data.wpm,
+            accuracy: data.accuracy,
+            mode: data.mode,
+            timestamp: data.timestamp
+          };
+        }
+      });
+
+      // Ubah ke array, urutkan, dan ambil 10 terbaik
+      const sortedScores = Object.values(userBestScores)
+        .sort((a, b) => b.wpm - a.wpm)
+        .slice(0, 10);
+
       leaderboardTableBody.innerHTML = "";
 
-      if (querySnapshot.empty) {
+      if (sortedScores.length === 0) {
         leaderboardTableBody.innerHTML = `
           <tr>
             <td colspan="6" style="text-align:center;">Belum ada data leaderboard.</td>
@@ -355,8 +376,7 @@ function showLeaderboard(mode) {
         `;
       } else {
         let rank = 1;
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
+        sortedScores.forEach((data) => {
           const date = data.timestamp ? data.timestamp.toDate().toLocaleString() : "unknown";
           leaderboardTableBody.innerHTML += `
             <tr>
@@ -371,12 +391,13 @@ function showLeaderboard(mode) {
         });
       }
 
-      leaderboardModal.classList.add("show"); // BUKA modal!
+      leaderboardModal.classList.add("show");
     })
     .catch((error) => {
       console.error("Error getting leaderboard: ", error);
     });
 }
+
 
 //function database leaderboard
 function showResult() {
