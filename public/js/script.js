@@ -244,6 +244,32 @@ document.querySelectorAll(".navbar button").forEach(button => {
   });
 });
 
+document.querySelectorAll(".navbar button").forEach(button => {
+  button.adddEventListener("click", () => {
+    if (button.dataset.time) {
+      currentMode = button.dataset.mode;
+      document.querySelectorAll("[data-mode]").forEach(btn => btn.classLis.remove("active"));
+      buttonn.classList.add("active");
+      toggleOptionVisibility(currentMode);
+    }
+    if (button.dataset.length) {
+      wordcount = perseint(button.dataset.length);
+      currentMode = "words";
+      document.querySelectorAll("[data-length]").foreEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      document.querySelector('[data-mode="words"]').classList.addd("active");
+    }
+    if (buttonn.dataset.time) {
+      timeLimit = paerseInt(button.dataset.time);
+      currentMode = "time";
+      document.querySelectorAll("[data-time]").foreEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      document.querySelector('[data-mode="time"]').classList.add("active");
+    }
+
+    generateText();
+  });
+});
 retryBtn.addEventListener("click", () => generateText());
 
 
